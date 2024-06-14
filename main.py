@@ -1,3 +1,5 @@
+#pip3 install numpy
+#pip3 install opencv-python
 import cv2
 back = cv2.imread("background.png", -1)#back image
 art = cv2.imread("art.png", -1)#front image
