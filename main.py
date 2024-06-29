@@ -1,24 +1,27 @@
 #pip3 install numpy
 #pip3 install opencv-python
 import cv2
-back = cv2.imread("background.png", -1)#back image
-art = cv2.imread("art.png", -1)#front image
-im_out = back#image that will be showed
-def img_obed(img, sa, sb):#first - image formate RGBA, second obsed y, third - obsed x
-    for a in range(img.shape[0]):
-        for b in range(img.shape[1]):
-            if(img.shape[2] == 4):
-                if(img[a][b][3] == 255):
-                    im_out[a + sa][b + sb][0] = img[a][b][0]
-                    im_out[a + sa][b + sb][1] = img[a][b][1]
-                    im_out[a + sa][b + sb][2] = img[a][b][2]
-            else:
-                im_out[a + sa][b + sb][0] = img[a][b][0]
-                im_out[a + sa][b + sb][1] = img[a][b][1]
-                im_out[a + sa][b + sb][2] = img[a][b][2]
-    pass
-img_obed(art, 100, 500)#use function for merge image in one
+#import numpy
+from function import*
+background = cv2.imread("background.png", -1)#background image
+art = cv2.imread("test.png", -1)#front image
+min_to_go = place_that_you_cant_go(background)
+sm = 180
+x, y = 0, 0#background.shape[0] // sm - 2
 while 1:
+    im_out = img_merge(background, art, y * sm, x * sm)#use function for merge image in one
     cv2.imshow("lol", im_out)#show image
-    if cv2.waitKey(1) & 0xFF == 27:
+    key = cv2.waitKey(0)
+    if key == 27:
         break
+    elif key == ord("w"):
+        y = y - 1
+    elif key == ord("s"):
+        y = y + 1
+    elif key == ord("d"):
+        x = x + 1
+    elif key == ord("a"):
+        x = x - 1
+    x = constrain(x, 0, background.shape[1] / sm)
+    y = constrain(y, min_to_go/sm, background.shape[0] / sm)
+    print(x, y)
